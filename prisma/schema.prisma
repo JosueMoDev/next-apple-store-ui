@@ -1,0 +1,284 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model Category {
+  id          String        @id
+  name        CategoryName  @unique
+  SubCategory SubCategory[]
+}
+
+model Chip {
+  id                  String                @id
+  chipFamilyName      ChipFamilyName
+  gama                ChipGama
+  name                String                @unique
+  ConfigOnChip        ConfigOnChip[]
+  Product             Product[]
+  StorageOnChip       StorageOnChip[]
+  UnifiedMemoryOnChip UnifiedMemoryOnChip[]
+}
+
+model Color {
+  id               String           @id
+  name             String
+  hexadecimalColor String           @unique
+  release          DateTime         @default(now())
+  ProductPicture   ProductPicture[]
+  StockByColor     StockByColor[]
+}
+
+model ConfigOnChip {
+  chipId               String
+  neuralEngine         NeuralEngine
+  gpuId                String
+  cpuId                String
+  price                Float
+  id                   String                 @id
+  Chip                 Chip                   @relation(fields: [chipId], references: [id])
+  Cpu                  Cpu                    @relation(fields: [cpuId], references: [id])
+  Gpu                  Gpu                    @relation(fields: [gpuId], references: [id])
+  ProductDetailsOnItem ProductDetailsOnItem[]
+}
+
+model Country {
+  id              String            @id
+  name            String
+  ShippingAddress ShippingAddress[]
+}
+
+model Cpu {
+  id           String         @id
+  cores        Int
+  ConfigOnChip ConfigOnChip[]
+}
+
+model Gpu {
+  id           String         @id
+  cores        Int
+  ConfigOnChip ConfigOnChip[]
+}
+
+model Order {
+  id                String           @id
+  subTotal          Float
+  tax               Float
+  total             Float
+  isPaid            Boolean          @default(false)
+  paidAt            DateTime?
+  createdAt         DateTime         @default(now())
+  updatedAt         DateTime
+  transactionId     String?
+  userId            String
+  shippingAddressId String?
+  totalOfItems      Int
+  ShippingAddress   ShippingAddress? @relation(fields: [shippingAddressId], references: [id])
+  User              User             @relation(fields: [userId], references: [id])
+  OrderItem         OrderItem[]
+}
+
+model OrderItem {
+  id                   String                @id
+  quantity             Int
+  price                Float
+  orderId              String
+  productId            String
+  Order                Order                 @relation(fields: [orderId], references: [id])
+  Product              Product               @relation(fields: [productId], references: [id])
+  ProductDetailsOnItem ProductDetailsOnItem?
+}
+
+model Product {
+  id                   String             @id
+  name                 String             @unique
+  description          String
+  slug                 String             @unique
+  price                Float              @default(0)
+  chipId               String?
+  subCategoryId        String
+  techSpecsOnProductId String             @unique
+  release              DateTime           @default(now())
+  OrderItem            OrderItem[]
+  Chip                 Chip?              @relation(fields: [chipId], references: [id])
+  SubCategory          SubCategory        @relation(fields: [subCategoryId], references: [id])
+  TechSpecsOnProduct   TechSpecsOnProduct @relation(fields: [techSpecsOnProductId], references: [id])
+  ProductPicture       ProductPicture[]
+  StockByColor         StockByColor[]
+}
+
+model ProductDetailsOnItem {
+  id                    String               @id
+  storageOnChipId       String?
+  unifiedMemoryOnChipId String?
+  configOnChipId        String?
+  orderItemId           String               @unique
+  ConfigOnChip          ConfigOnChip?        @relation(fields: [configOnChipId], references: [id])
+  OrderItem             OrderItem            @relation(fields: [orderItemId], references: [id])
+  StorageOnChip         StorageOnChip?       @relation(fields: [storageOnChipId], references: [id])
+  UnifiedMemoryOnChip   UnifiedMemoryOnChip? @relation(fields: [unifiedMemoryOnChipId], references: [id])
+}
+
+model ProductPicture {
+  id        String  @id
+  url       String
+  productId String
+  colorId   String
+  Color     Color   @relation(fields: [colorId], references: [id])
+  Product   Product @relation(fields: [productId], references: [id])
+}
+
+model ShippingAddress {
+  id         String  @id
+  firstName  String
+  lastName   String
+  address    String
+  address2   String?
+  postalCode String
+  phone      String
+  city       String
+  countryId  String
+  userId     String
+  Order      Order[]
+  Country    Country @relation(fields: [countryId], references: [id])
+  User       User    @relation(fields: [userId], references: [id])
+}
+
+model StockByColor {
+  productId String
+  colorId   String
+  stock     Int
+  id        String  @id
+  Color     Color   @relation(fields: [colorId], references: [id])
+  Product   Product @relation(fields: [productId], references: [id])
+}
+
+model Storage {
+  id            String          @id
+  capacityOn    CapacityOn
+  capacity      Int             @unique
+  StorageOnChip StorageOnChip[]
+}
+
+model StorageOnChip {
+  chipId               String
+  storageId            String
+  price                Float
+  id                   String                 @id
+  ProductDetailsOnItem ProductDetailsOnItem[]
+  Chip                 Chip                   @relation(fields: [chipId], references: [id])
+  Storage              Storage                @relation(fields: [storageId], references: [id])
+}
+
+model SubCategory {
+  id                 String               @id
+  name               String
+  slug               String               @unique
+  gender             Gender
+  categoryId         String
+  isActive           Boolean              @default(true)
+  Product            Product[]
+  Category           Category             @relation(fields: [categoryId], references: [id])
+  TechSpecsOnProduct TechSpecsOnProduct[]
+}
+
+model TechSpecsOnProduct {
+  id            String      @id
+  name          String      @unique
+  subCategoryId String
+  techSpecs     Json?
+  Product       Product?
+  SubCategory   SubCategory @relation(fields: [subCategoryId], references: [id])
+}
+
+model UnifiedMemory {
+  id                  String                @id
+  capacity            Int
+  UnifiedMemoryOnChip UnifiedMemoryOnChip[]
+}
+
+model UnifiedMemoryOnChip {
+  chipId               String
+  price                Float
+  unifiedMemoryId      String
+  id                   String                 @id
+  ProductDetailsOnItem ProductDetailsOnItem[]
+  Chip                 Chip                   @relation(fields: [chipId], references: [id])
+  UnifiedMemory        UnifiedMemory          @relation(fields: [unifiedMemoryId], references: [id])
+}
+
+model User {
+  id              String            @id
+  email           String            @unique
+  emailVerified   DateTime?
+  password        String
+  role            Role
+  picture         String?
+  isActive        Boolean           @default(true)
+  firstName       String
+  lastName        String
+  Order           Order[]
+  ShippingAddress ShippingAddress[]
+}
+
+enum CapacityOn {
+  GB
+  TB
+}
+
+enum CategoryName {
+  IPHONE
+  IPAD
+  WATCH
+  MAC
+  VISION
+  AIRPODS
+  TVHOME
+  ACCESSORIES
+}
+
+enum ChipFamilyName {
+  M1
+  M2
+  M3
+  S8
+  S9
+  A15
+  A16
+  A17
+}
+
+enum ChipGama {
+  BASE
+  PRO
+  MAX
+  ULTRA
+  BIONIC
+}
+
+enum Gender {
+  DISPLAY
+  LAPTOP
+  DESKTOP
+  PHONE
+  TABLET
+  WATCH
+  AUDIO
+  ACCESSORY
+  VISION
+}
+
+enum NeuralEngine {
+  SixTeenCores
+  ThirtyCores
+}
+
+enum Role {
+  CLIENT
+  USER
+  SUPERUSER
+}
