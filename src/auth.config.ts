@@ -2,6 +2,7 @@ import NextAuth, { type NextAuthConfig } from "next-auth";
 import Credentials from "next-auth/providers/credentials";
 import { z } from "zod";
 import { loginQuery } from "./app/auth/login/api/loginQuery";
+import { userMapper } from "./app/auth/mapper/user.mapper";
 
 export const authConfig: NextAuthConfig = {
   pages: {
@@ -42,22 +43,20 @@ export const authConfig: NextAuthConfig = {
     Credentials({
       async authorize(credentials) {
         const parsedCredentials = z
-        .object({ email: z.string().email(), password: z.string().min(6) })
-        .safeParse(credentials);
-        
-        if (!parsedCredentials.success) return null;
-        
-        const { email, password } = parsedCredentials.data;
+          .object({ email: z.string().email(), password: z.string().min(6) })
+          .safeParse(credentials);
 
-        // Buscar el correo
-        const { data } = await loginQuery({ email, password });
-        console.log(data);
-        if (!data) return null;
-
-        // Comparar las contraseñas
-
-        // Regresar el usuario sin el password
-        return {email};
+        try {
+          if (!parsedCredentials.success) return null;
+          const { email, password } = parsedCredentials.data;
+          const { data } = await loginQuery({ email, password });
+          const user = userMapper(data);
+          if(! user) return null;
+          return user;
+        } catch (error) {
+          console.log(`${error}`);
+          return null;
+        }
       },
     }),
   ],
