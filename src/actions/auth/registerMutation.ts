@@ -25,7 +25,7 @@ const REGISTER_MUTATION = gql`
   }
 `;
 
-export const RegisterMutation = async (registerUserInput: RegisterInput) => {
+export async function RegisterMutation (registerUserInput: RegisterInput) {
   try {
     const { data } = await apolloClient.mutate({
       mutation: REGISTER_MUTATION,

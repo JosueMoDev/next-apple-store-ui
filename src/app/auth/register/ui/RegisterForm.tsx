@@ -5,7 +5,7 @@ import Link from "next/link";
 import { SubmitHandler, useForm } from "react-hook-form";
 
 import { useEffect, useState } from "react";
-import { RegisterMutation } from "../api/registerMutaion";
+import { RegisterMutation } from "@/actions";
 
 type FormInputs = {
   firstName: string;
@@ -29,10 +29,8 @@ export const RegisterForm = () => {
     try {
       const user = await RegisterMutation({ lastName, firstName, email, password });
       console.log( user );
-      // Registro exitoso, puedes hacer algo aquí, como redireccionar al usuario a una página de inicio de sesión.
     } catch (error) {
       console.error("Error al registrar:", error);
-      // Si hay un error en el registro, establece el mensaje de error para mostrar al usuario.
       setErrorMessage("Error al registrar. Por favor, inténtalo de nuevo.");
     }
     

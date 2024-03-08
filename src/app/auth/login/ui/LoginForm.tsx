@@ -4,7 +4,7 @@ import { useEffect } from "react";
 import Link from "next/link";
 import { useFormState, useFormStatus } from "react-dom";
 
-import { authenticate } from "@/actions/auth";
+import { authenticate } from "@/actions";
 import { IoInformationOutline } from "react-icons/io5";
 import clsx from "clsx";
 
@@ -13,7 +13,7 @@ export const LoginForm = () => {
 
   useEffect(() => {
     if (state === "Success") {
-      window.location.replace("/");
+      window.location.replace("/products");
     }
   }, [state]);
 

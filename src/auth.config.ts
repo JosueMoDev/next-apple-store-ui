@@ -1,7 +1,7 @@
 import NextAuth, { type NextAuthConfig } from "next-auth";
 import Credentials from "next-auth/providers/credentials";
 import { z } from "zod";
-import { loginQuery } from "./app/auth/login/api/loginQuery";
+import { loginQuery } from "./actions";
 import { userMapper } from "./app/auth/mapper/user.mapper";
 
 export const authConfig: NextAuthConfig = {
@@ -51,7 +51,8 @@ export const authConfig: NextAuthConfig = {
           const { email, password } = parsedCredentials.data;
           const { data } = await loginQuery({ email, password });
           const user = userMapper(data);
-          if(! user) return null;
+          if (!user) return null;
+          
           return user;
         } catch (error) {
           console.log(`${error}`);
@@ -63,4 +64,3 @@ export const authConfig: NextAuthConfig = {
 };
 
 export const { signIn, signOut, auth, handlers } = NextAuth(authConfig);
-

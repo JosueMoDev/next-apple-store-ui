@@ -20,12 +20,12 @@ const LOGINQUERY = gql`
     }
   }
 `;
-export const loginQuery = async (loginInput: LoginInput) => {
+export  async function loginQuery(loginInput: LoginInput) {
   const { data } = await apolloClient.query({
     query: LOGINQUERY,
     variables: {
       loginInput,
     },
   });
-  return {  data };
+  return { data };
 };
