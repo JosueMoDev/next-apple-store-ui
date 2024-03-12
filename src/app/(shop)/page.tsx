@@ -1,5 +1,6 @@
 export const revalidate = 60; // 60 segundos
 
+import { ProductsGrid } from "@/components";
 import { redirect } from "next/navigation";
 
 
@@ -22,10 +23,7 @@ export default async function Home() {
   return (
     <>
       <h1 className="mb-2"> TODOS LOS PRODUCTOS</h1>
-
-      {/* <ProductGrid products={products} />
-
-      <Pagination totalPages={totalPages} /> */}
+      <ProductsGrid  />    
     </>
   );
 }

@@ -1,5 +1,4 @@
 "use server";
-import { Products } from '@/components';
 
 export default async function ProductsPage() {
 
@@ -10,7 +9,6 @@ export default async function ProductsPage() {
       </div>
       <div>
         <h1>Data form Graphql Endpoint</h1>
-        <Products></Products>
       </div>
     </>
   );

@@ -1,1 +1,1 @@
-export * from './products/Products';
+export * from './products/ProductsGrid';

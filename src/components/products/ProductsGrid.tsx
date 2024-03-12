@@ -1,5 +1,7 @@
 "use client";
 import { useQuery, gql } from "@apollo/client";
+import { ProductGridItem } from "./ProductGridItem";
+import { Product } from "@/interfaces/product.interface";
 
 const GET_PRODUCTS = gql`
   query Products {
@@ -12,30 +14,35 @@ const GET_PRODUCTS = gql`
       subCategory {
         name
         id
+        slug
         gender
-      }
-      stockByColor {
-        id
-        color {
+        isActive
+        category {
           id
           name
+        }
+      }
+      stockByColor {
+        stock
+        color {
+          name
+          id
           hexadecimalColor
           release
         }
-        stock
+        id
       }
       picturesByColor {
-        color
         productPictures {
           id
           url
         }
       }
       chip {
+        name
         id
         chipFamilyName
         gama
-        name
         storageOnChip {
           id
           storage {
@@ -70,14 +77,18 @@ const GET_PRODUCTS = gql`
     }
   }
 `;
-export const Products = () => {
-  const { loading, error, data } = useQuery(GET_PRODUCTS);
-  console.log({
-    loading: loading,
-    error: error,
-    data: data,
-  })
+export const ProductsGrid = () => {
+  const { loading, error, data } = useQuery<{ products: Product[] }>(
+    GET_PRODUCTS
+  );
   if (loading) return <p>Loading...</p>;
   if (error) return <p>Error: {error.message}</p>;
-  return <p className="text-2xl text-white">{JSON.stringify(data)}</p>;
+  
+  return (
+     <div className="grid grid-cols-2 sm:grid-cols-3 gap-10 mb-10">
+       {data?.products.map(( product: any ) => (
+         <ProductGridItem key={ product.slug } product={product} />
+       ))}
+     </div>
+  );
 };
