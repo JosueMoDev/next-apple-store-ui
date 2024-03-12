@@ -34,8 +34,8 @@ export const ProductGridItem = ({ product }: Props) => {
       <div className="prod-info grid gap-10">
         <div>
           <ul className="flex flex-row justify-center items-center">
-            {product.stockByColor.map(({ color }) => (
-              <li className="mr-4 last:mr-0">
+            {product.stockByColor.map(({ color }, key) => (
+              <li className="mr-4 last:mr-0" key={key}>
                 <span className="block p-1 border-gray-500 rounded-full transition ease-in duration-300">
                   <span
                     className={`block w-4 h-4 rounded-full`}

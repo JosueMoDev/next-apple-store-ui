@@ -28,7 +28,6 @@ export const RegisterForm = () => {
 
     try {
       const user = await RegisterMutation({ lastName, firstName, email, password });
-      console.log( user );
     } catch (error) {
       console.error("Error al registrar:", error);
       setErrorMessage("Error al registrar. Por favor, inténtalo de nuevo.");
