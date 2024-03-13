@@ -1,4 +1,4 @@
-export const revalidate = 60; // 60 segundos
+export const revalidate = 3600; // 60 segundos
 
 import { ProductsGrid } from "@/components";
 import { redirect } from "next/navigation";

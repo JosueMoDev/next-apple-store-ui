@@ -1,4 +1,3 @@
 export * from './product-image/ProductImage';
-export * from './products/ProductGridItem';
-export * from './products/ProductsGrid';
-export * from './ui/top-menu';
+export * from './products';
+export * from './ui';

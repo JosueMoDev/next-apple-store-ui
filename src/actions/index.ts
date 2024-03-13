@@ -1,2 +1,3 @@
 export * from './auth';
-export * from './ui/getCategory';
+export * from './product';
+export * from './ui';
