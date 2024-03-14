@@ -15,13 +15,15 @@ export const ProductGridItem = ({ product }: Props) => {
       <div className="prod-title">
         <Link
           className="text-2xl text-gray-900 font-semibold"
-          href={`/product/${product.slug}`}
+          href={`/shop/buy-${product.subCategory.category.name.toLowerCase()}`}
         >
           {product.name}
         </Link>
       </div>
       <div className="prod-img">
-        <Link href={`/product/${product.slug}`}>
+        <Link
+          href={`/shop/buy-${product.subCategory.category.name.toLowerCase()}`}
+        >
           <ProductImage
             src={product.picturesByColor[0].productPictures[0].url}
             width={400}
@@ -48,9 +50,12 @@ export const ProductGridItem = ({ product }: Props) => {
         </div>
         <div className="flex flex-col md:flex-row justify-between items-center text-gray-900">
           <p className="text-sm"> From ${product.price}</p>
-          <button className="px-5 py-2 rounded-full text-white bg-blue-600 hover:bg-blue-500 focus:outline-none">
+          <Link
+            className="px-5 py-2 rounded-full text-white bg-blue-600 hover:bg-blue-500 focus:outline-none"
+            href={`/shop/buy-${product.subCategory.category.name.toLowerCase()}`}
+          >
             Buy
-          </button>
+          </Link>
         </div>
       </div>
     </div>
