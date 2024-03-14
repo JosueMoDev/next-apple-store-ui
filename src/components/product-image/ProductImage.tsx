@@ -17,16 +17,16 @@ export const ProductImage = ({
   width,
   height,
 }: Props) => {
-  const localSrc = "/imgs/placeholder.webp";
-  // src
-  //   ? src.startsWith("http") // https://urlcompletodelaimagen.jpg
-  //     ? src
-  //     : `/products/${src}`
-  //   : "/imgs/placeholder.webp";
+  console.log(src)
+  src
+    ? src.startsWith("http") // https://urlcompletodelaimagen.jpg
+      ? src
+      : `/products/${src}`
+    : "/imgs/placeholder.webp";
 
   return (
     <Image
-      src={localSrc}
+      src={src!}
       width={width}
       height={height}
       alt={alt}

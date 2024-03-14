@@ -6,6 +6,10 @@ const nextConfig = {
         protocol: "https",
         hostname: "cloudinary.com",
       },
+      {
+        protocol: "https",
+        hostname: "store.storeimages.cdn-apple.com",
+      },
     ],
   },
 };
