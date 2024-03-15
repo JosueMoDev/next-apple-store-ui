@@ -22,7 +22,7 @@ export const ProductGridItem = ({ product }: Props) => {
       </div>
       <div className="prod-img">
         <Link
-          href={`/shop/buy-${product.subCategory.category.name.toLowerCase()}`}
+          href={`/shop/${product.slug}`}
         >
           <ProductImage
             src={product.picturesByColor[0].productPictures[0].url}
@@ -52,7 +52,7 @@ export const ProductGridItem = ({ product }: Props) => {
           <p className="text-sm"> From ${product.price}</p>
           <Link
             className="px-5 py-2 rounded-full text-white bg-blue-600 hover:bg-blue-500 focus:outline-none"
-            href={`/shop/buy-${product.subCategory.category.name.toLowerCase()}`}
+            href={`/shop/${product.slug}`}
           >
             Buy
           </Link>

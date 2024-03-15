@@ -58,6 +58,7 @@ export enum CapacityOn {
 }
 
 export interface PicturesByColor {
+  color: string;
   productPictures: ProductPicture[];
 }
 

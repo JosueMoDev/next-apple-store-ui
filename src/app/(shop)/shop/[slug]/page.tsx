@@ -1,4 +1,5 @@
 import { getProductBySlugQuery } from "@/actions";
+import { ProductSelectedBySlug } from "@/components";
 import { notFound } from "next/navigation";
 
 interface Props {
@@ -14,7 +15,7 @@ export default async function ProductPage({ params }: Props) {
   }
   return (
     <div>
-      <h3 className="text-3xl mb-10">{ product.name }</h3>
+      <ProductSelectedBySlug product={ product } />
     </div>
   );
 }
