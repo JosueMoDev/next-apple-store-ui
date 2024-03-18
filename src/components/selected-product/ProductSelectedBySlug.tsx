@@ -1,11 +1,17 @@
+"use client"
 import { Product } from "@/interfaces/product.interface";
 import { PicturesSlide } from "./PicturesSlide";
+import { useState } from "react";
 
 interface props {
   product: Product
 }
-export const ProductSelectedBySlug = async ({ product }: props) => {
- 
+export const ProductSelectedBySlug = ({ product }: props) => {
+ const [selectedOption, setSelectedOption] = useState("");
+console.log(selectedOption);
+ const handleOptionSelect = (option: any) => {
+   setSelectedOption(option);
+ };
   return (
     <div className="w-full flex justify-center">
       <div className="w-10/12 px-10">
@@ -21,14 +27,33 @@ export const ProductSelectedBySlug = async ({ product }: props) => {
               Customize Your {product.name}
             </h2>
 
-            <div className="flex py-4 space-x-4">
-              <button
-                type="button"
-                className="h-14 px-6 py-2 font-semibold rounded-xl bg-indigo-600 hover:bg-indigo-500 text-white"
-              >
-                Add to Cart
-              </button>
+            <div className="flex w-full  py-4 space-x-4">
+              <div className="grid flex-wrap gap-4 w-full">
+                {product.chip?.storageOnChip.map(({ id, storage }) => (
+                  <button
+                    key={id}
+                    className={`px-2 py-4 border w-full rounded-md ${
+                      selectedOption === id
+                        ? "border-blue-500"
+                        : "border-gray-200"
+                    } `}
+                    style={{display: "block" }}
+                    onClick={() => handleOptionSelect(id)}
+                  >
+                    <div className="mx-auto px-3 flex items-center justify-start">
+                      {`${storage?.capacity} ${storage?.capacityOn} SSD storage`}
+                    </div>
+                  </button>
+                ))}
+              </div>
             </div>
+
+            <button
+              type="button"
+              className="h-14 px-6 py-2 font-semibold rounded-xl bg-indigo-600 hover:bg-indigo-500 text-white"
+            >
+              Add to Cart
+            </button>
           </div>
         </div>
       </div>

@@ -34,7 +34,7 @@ export const  PicturesSlide = ({ picturesByColor, name }: Props) => {
               height={720}
               src={url}
               alt={name}
-              className="rounded-lg object-fill"
+              className="rounded-lg bg-blue-500 object-fill"
               priority={true}
             />
           </SwiperSlide>
