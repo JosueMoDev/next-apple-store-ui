@@ -1,4 +1,5 @@
-import { Swiper as SwiperObject } from "swiper";
+"use client";
+
 import { Swiper, SwiperSlide } from "swiper/react";
 import { Autoplay, FreeMode, Navigation, Thumbs } from "swiper/modules";
 
@@ -6,48 +7,35 @@ import "swiper/css";
 import "swiper/css/free-mode";
 import "swiper/css/navigation";
 import "swiper/css/thumbs";
-import { ProductImage } from "../product-image";
-import { useState } from "react";
 import "./slideshow.css";
-import { ProductPicture } from "@/interfaces/product.interface";
-import { PicturesByColor } from '../../interfaces/product.interface';
+import { PicturesByColor } from "../../interfaces/product.interface";
+import Image from "next/image";
 
 interface Props {
-    name: string;
-    picturesByColor: PicturesByColor[];
+  name: string;
+  picturesByColor: PicturesByColor[];
 }
-export default async function PicturesSlide({ picturesByColor, name }: Props) {
-
-  const [thumbsSwiper, setThumbsSwiper] = useState<SwiperObject>();
-
+export const  PicturesSlide = ({ picturesByColor, name }: Props) => {
+  const {  productPictures} = picturesByColor[0];
   return (
-    <div>
+    <div className="w-full">
       <Swiper
-        style={
-          {
-            "--swiper-navigation-color": "#fff",
-            "--swiper-pagination-color": "#fff",
-          } as React.CSSProperties
-        }
-        spaceBetween={10}
-        navigation={true}
         autoplay={{
           delay: 2500,
         }}
-        thumbs={{
-          swiper: thumbsSwiper && !thumbsSwiper.destroyed ? thumbsSwiper : null,
-        }}
+        spaceBetween={10}
         modules={[FreeMode, Navigation, Thumbs, Autoplay]}
         className="mySwiper2"
       >
-        {picturesByColor.map(({ productPictures, color }, key) => (
-          <SwiperSlide key={productPictures[0].url[0]}>
-            <ProductImage
-              width={1024}
-              height={800}
-              src={productPictures[0].url}
-              alt={`${name}-${color}-${key}`}
+        {productPictures.map(({ id, url }) => (
+          <SwiperSlide key={id}>
+            <Image
+              width={1080}
+              height={720}
+              src={url}
+              alt={name}
               className="rounded-lg object-fill"
+              priority={true}
             />
           </SwiperSlide>
         ))}
@@ -55,3 +43,4 @@ export default async function PicturesSlide({ picturesByColor, name }: Props) {
     </div>
   );
 }
+
